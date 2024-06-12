@@ -1,0 +1,131 @@
+@use '../variables' as *; 
+@use '../media' as *;
+
+.subscribe {
+    padding: 120px 0;
+    @include laptop {
+        padding: 100px 0;
+    }
+
+    @include tablet {
+        padding: 82px 0 100px;
+    }
+
+    @include mobile {
+        padding: 80px 0;
+    }
+
+    &__form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        
+    }
+
+    &__title {
+        max-width: 1000px;
+        margin-bottom: 50px;
+        font-weight: 700;
+        font-size: 52px;
+        line-height: 130%;
+        text-align: center;
+        @include laptop {
+            font-size: 44px;
+            margin-bottom: 32px;
+        }
+
+        @include mobile {
+            font-size: 30px;
+        }
+    }
+
+    &__field {
+        position: relative;
+        margin: 0;
+        padding: 0;
+        max-width: 732px;
+        width: 100%;
+        border: none;
+    
+        @include tablet {
+            max-width: 676px;
+        }
+    
+        @include mobile {
+            max-width: 292px;
+        }
+    }
+
+    &__input {
+        border: 2px solid $purple;
+        border-radius: 40px;
+        padding: 14px 30px;
+        width: 732px;
+        height: 66px;
+        background: $light;
+        width: 100%;
+        font-weight: 400;
+        //font-size: var(--font-size);
+        font-size: inherit;
+        line-height: 1.4;
+        color: $green;
+
+        @include mobile {
+            height: 54px;
+        }
+
+        
+
+        &::placeholder {
+            opacity: 0.4;
+            color: $green;
+        }
+    }
+
+    &__button {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        border: 1px solid transparent;
+        border-radius: 40px;
+        padding: 16px 31px;
+        background: $purple;
+        font-weight: 700;
+        //font-size: 24px;
+        line-height: 1.4;
+        text-align: center;
+        color: $light;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 4px;
+        min-width: 209px;
+
+        @include laptop {
+            padding: 16px 24px;
+        }
+
+        @include mobile {
+            //font-size: 0;
+            min-width: 54px;
+            padding: 0;
+        }
+
+        &::after {
+            content: '';
+            display: block;
+            width: 16px;
+            height: 16px;
+            background-image: url('/img/arrow-up.svg');
+        }
+    }
+
+    &__button-text {
+        @include mobile {
+            position: fixed;
+            transform: scale(0);
+        }
+    }
+}
+

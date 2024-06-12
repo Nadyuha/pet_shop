@@ -1,0 +1,133 @@
+@use '../variables' as *; 
+@use '../media' as *;
+
+.footer {
+    padding: 80px 0 32px;
+    background-color:  $green;
+    background-image: url('/img/pic.png');
+    background-image: image-set(
+        url('/img/pic.webp') type('image/webp') 1x,
+        url('/img/pic.png') type('image/png') 1x,
+        );
+    background-repeat: no-repeat;
+    background-size: 375px;
+    color: $light;
+    //background-position: 41vw 50px;
+    background-position: left 41vw bottom -75px;
+
+
+    @include laptop {
+        padding: 50px 0 32px;
+        background-image: url('/img/pic-laptop.png');
+        //background-position: 41vw 80px;
+        background-size: 311px;
+        background-position: left 41vw bottom -75px;
+    }
+
+    @include tablet {
+        padding: 40px 0 32px;
+        background-image: url('/img/pic-tablet.png');
+        //background-position: 68vw 142px;
+        background-size: 215px;
+        background-position: right 46px bottom -45px;
+    }
+
+    @include mobile {
+        padding: 30px 0 24px;
+        background-image: url('/img/pic-mobile.png');
+       // background-position: 62vw 250px;
+        background-size: 144px;
+        background-position: right -30px bottom -30px;
+    }
+
+    &__container {
+        display: grid;
+        gap: 25px;
+        grid-template-areas: 
+        "logo contacts"
+        "info contacts";
+
+        @include mobile {
+            grid-template-areas: 
+        "logo"
+        "contacts"
+        "info";
+        }
+    }
+
+    &__logo {
+        grid-area: logo;
+        width: 331px;
+        margin-bottom: 25px;
+
+        @include tablet {
+            margin-bottom: 82px;
+            width: 200px;
+        }
+    
+        @include mobile {
+            margin-bottom: 32px;
+        }
+    }
+
+    &__info {
+        grid-area: info;
+        font-size: 16px;
+
+        @include mobile {
+            font-size: 12px;
+        }
+    }
+
+    &__copyright {
+        //font-size: 16px;
+        margin-bottom: 16px;
+    }
+
+    &__text {
+        font-weight: 400;
+        //font-size: 16px;
+        line-height: 1.4;
+        margin-bottom: 3px;
+    }
+
+
+    &__item {
+        margin-bottom: 3px;
+        //font-size: 16px;
+
+        // @include mobile {
+        //     font-size: 12px;
+        // }
+        &:last-child {
+            margin-bottom: 0;
+        }
+    }
+
+    &__contacts {
+        grid-area: contacts;
+        justify-self: end;
+        font-style: normal;
+
+        // @include tablet {
+        //     padding: 0 0 0 15px;
+        // }
+
+        @include mobile {
+            //padding: 0;
+            justify-self: start;
+            margin-bottom: 67px;
+        }
+    }
+
+    &__email {
+        display: inline-block;
+        margin-bottom: 16px;
+    }
+
+    &__social-list {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+}

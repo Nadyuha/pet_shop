@@ -1,0 +1,115 @@
+@use '../variables' as *; 
+@use '../_media.scss' as *;
+
+.store {
+    padding: 120px 0;
+
+    &__nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 40px;
+    }
+
+    &__categories {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 28px;
+        width: 90%;
+
+        @include mobile {
+            gap: 10px;
+        }
+    }
+
+    // &__category-item {
+    // }
+
+    &__category-button {
+        color: $carrot;
+        padding-bottom: 10px;
+        position: relative;
+
+        &--active {
+            color: $green;
+
+        }
+
+        &::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            height: 1px;
+            background-color: $green;
+            transform: scaleX(0);
+            transition: transform 0.3s ease-in-out;
+        }
+
+        &--active::after {
+            transform: scaleX(1);
+            
+        }
+    }
+
+    &__cart-button {
+        // font-size: 0;
+        position: relative;
+        display: block;
+        width: 28px;
+        height: 28px;
+
+        @include bigscreen {
+            width: 32px;
+            height: 32px;
+        }
+    }
+
+    &__cart-cnt {
+        position: relative;
+        z-index: 2;
+        font-weight: 700;
+        font-size: 12px;
+        line-height: 1;
+        text-align: center;
+        color: $light;
+    }
+
+    &__cart-icon {
+        position: absolute;
+        inset: 0;
+        z-index: 1;
+        width: 100%;
+        height: 100%;
+        
+    }
+
+    &__title {
+        font-weight: 700;
+        font-size: 52px;
+        line-height: 1.3;
+        color: $green;
+        margin-bottom: 32px;
+    }
+
+    &__list {
+        display: grid;
+        // grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(auto-fill, 420px);
+        gap: 20px;
+        justify-content: center;
+
+        @include mobile {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    &__item {
+        display: flex;
+    }
+
+    // &__product {
+    // }
+}
+

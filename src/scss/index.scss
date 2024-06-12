@@ -1,0 +1,20 @@
+//@import "default";
+@use "default";
+@use "components/header";
+@use "components/hero";
+@use "components/about";
+@use "components/advantages";
+@use "components/subscribe";
+@use "components/footer";
+@use "components/store";
+@use "components/product";
+@use "components/modal";
+@use "components/modal-overlay";
+@use "components/radio";
+
+@use "components/preloader";
+@use "components/order-message";
+
+
+@import "normalize.css";
+

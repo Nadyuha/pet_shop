@@ -1,0 +1,275 @@
+@use '../variables' as *; 
+@use '../media' as *;
+
+.advantages {
+    position: relative;
+    color: $light;
+
+    &__bg {
+        padding: 100px 0;
+        border-radius: 300px 300px 0 0;
+        background-color: $carrot;
+        background-image:  url('/img/pattern.svg');
+        background-size: cover;
+        background-position: center;
+        background-repeat: repeat;
+        @include laptop {
+            padding: 80px 0;
+            border-radius: 200px 200px 0 0;
+            background-image:  url('/img/pattern-laptop.svg');
+        }
+    
+        @include tablet {
+            border-radius: 120px 120px 0 0;
+            background-image:  url('/img/pattern-tablet.svg');
+        }
+    
+        @include mobile {
+            padding: 50px 0;
+            border-radius: 80px 80px 0 0;
+            background-image:  url('/img/pattern-mobile.svg');
+        }
+    }
+
+    &__title {
+        font-weight: 700;
+        font-size: 52px;
+        line-height: 1.3;
+        text-align: center;
+        margin-bottom: 50px;
+        @include laptop {
+            font-size: 44px;
+            margin-bottom: 32px;
+        }
+    
+        @include mobile {
+            font-size: 30px;
+            margin: 0 auto;
+            margin-bottom: 24px;
+            max-width: 290px;
+        }
+    }
+
+    &__list {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        // display: flex; // if flex
+        // justify-content: space-between;// if flex
+        gap: 24px;
+        @include laptop {
+            gap: 20px;
+        }
+    
+        @include tablet {
+            grid-template-columns: 1fr;
+            gap: 50px;
+        }
+    
+        @include mobile {
+            gap: 32px;
+        }
+    }
+
+    &__item {
+        display: flex;
+        flex-direction: column;
+        //width: calc(100% / 3);//if flex
+        align-items: center;
+
+
+        &-img {
+            height: 256px;
+            width: 100%;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            margin-bottom: 12px;
+
+            @include laptop {
+                height: 160px;
+                width: 100%;
+            }
+
+            @include mobile {
+                height: 80px;
+                width: 100%;
+                margin-bottom: 6px;
+            }
+        }
+
+        &-img1 {
+            background-image: url('/img/soft-dog-house_2.png');
+            background-image: image-set(
+                url('/img/soft-dog-house_2.webp') type('image/webp') 1x,
+                url('/img/soft-dog-house_2.webp') type('image/webp') 2x,
+                url('/img/soft-dog-house_2.png') type('image/png') 1x,
+                url('/img/soft-dog-house_2.png') type('image/png') 2x
+                );
+        }
+
+        &-img2 {
+            background-image: url('/img/soft-dog-house_3.png');
+            background-image: image-set(
+                url('/img/soft-dog-house_3.webp') type('image/webp') 1x,
+                url('/img/soft-dog-house_3@2x.webp') type('image/webp') 2x,
+                url('/img/soft-dog-house_3.png') type('image/png') 1x,
+                url('/img/soft-dog-house_3@2x.png') type('image/png') 2x
+                );
+        }
+
+        &-img3 {
+            background-image: url('/img/dog-small.png');
+            background-image: image-set(
+                url('/img/dog-small.webp') type('image/webp') 1x,
+                url('/img/dog-small@2x.webp') type('image/webp') 2x,
+                url('/img/dog-small.png') type('image/png') 1x,
+                url('/img/dog-small@2x.png') type('image/png') 2x
+                );
+        }
+    }
+
+
+    &__subtitle {
+        font-weight: 700;
+        font-size: 28px;
+        line-height: 1.4;
+        text-align: center;
+        margin: 0 auto;
+        margin-bottom: 12px;
+        width: min-content;
+        //width: 60%;
+        @include laptop {
+            font-size: 24px;
+        }
+
+        @include mobile {
+            font-size: 20px;
+            margin-bottom: 4px;
+        }
+    }
+
+    &__text {
+        font-weight: 400;
+        //font-size: 24px;
+        line-height: 1.4;
+        text-align: center;
+        @include laptop {
+            font-size: 20px;
+        }
+
+        @include mobile {
+            font-size: 16px;
+        }
+    }
+
+    &__count-box {
+        position: absolute; 
+        top: -115px;
+        left: 0;
+        width: 306px;
+        height: 306px;
+        background-image: url('/img/star-green.svg');
+        background-size: contain;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        @include bigscreen{
+            left: calc(50% - 800px);
+        }
+
+        @include laptop {
+            width: 257px;
+            height: 257px;
+            top: -102px;
+        }
+    
+        @include tablet {
+            width: 201px;
+            height: 201px;
+        }
+    
+        @include mobile {
+            width: 140px;
+            height: 140px;
+            top: -73px;
+        }
+    }
+
+    &__count {
+        font-weight: 700;
+        font-size: 52px;
+        text-align: center;
+        @include laptop {
+            font-size: 44px;
+        }
+    
+        @include tablet {
+            font-size: 32px;
+        }
+    
+        @include mobile {
+            font-size: 10px;
+        }
+    }
+
+    &__count-text {
+        max-width: 122px;
+        font-weight: 400;
+        //font-size: 24px;
+        line-height: 1.2;
+        text-align: center;
+        color: $light;
+        @include laptop {
+            font-size: 20px;
+        }
+    
+        @include mobile {
+            font-size: 16px;
+        }
+    }
+    
+    &::after {
+        content: '';
+        position: absolute;
+        width: 396px;
+        height: 682px;
+        top: -338px;
+        right: 0;
+        background-image: url('/img/dog.png');
+        background-image: image-set(
+            url('/img/dog.webp') type('image/webp') 1x,
+            url('/img/dog@2x.webp') type('image/webp') 2x,
+            url('/img/dog.png') type('image/png') 1x,
+            url('/img/dog@2x.png') type('image/png') 2x
+            );
+        background-size: contain;
+        z-index: -1;
+
+        @include bigscreen{
+            right: calc(50% - 800px);
+        }
+        @include laptop {
+            width: 272px;
+            height: 469px;
+            top: -242px;
+            right: 8;
+        }
+    
+        @include tablet {
+            width: 202px;
+            height: 348px;
+            top: -176px;
+            right: -25px;
+        }
+    
+        @include mobile {
+            width: 100px;
+            height: 169px;
+            top: -82px;
+            right: 0;
+        }
+    }
+}
+
