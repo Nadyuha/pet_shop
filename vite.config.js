@@ -21,12 +21,12 @@ export default defineConfig({
     },
     plugins: [
         ViteImageOptimizer({
-            test: /\.(jpe?g|png|gif|tiff|webp|svg|avif)$/i,
-            exclude: undefined,
-            include: undefined,
-            includePublic: true,
-            logStats: true,
-            ansiColors: true,
+            // test: /\.(jpe?g|png|gif|tiff|webp|svg|avif)$/i,
+            // exclude: undefined,
+            // include: undefined,
+            // includePublic: true,
+            // logStats: true,
+            // ansiColors: true,
             // svg: {
             //     multipass: true,
             //     plugins: [{
