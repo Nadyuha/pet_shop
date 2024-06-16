@@ -139,6 +139,16 @@ const renderCartItems = async () => {
     })
 
     const totalPrice = calculateTotalPrice(cartItems, products);
+    console.log(totalPrice);
+    if(totalPrice === 0) {
+        const btn = document.querySelector('.modal__cart-button');
+        btn.setAttribute('disabled', true)
+        btn.style.cursor = "not-allowed"
+    } else {
+        const btn = document.querySelector('.modal__cart-button');
+        btn.setAttribute('disabled', false)
+        btn.style.cursor = "pointer"
+    }
     cartTotalPriceElement.innerHTML = `${totalPrice}&nbsp;₽`
 };
 
@@ -154,11 +164,6 @@ cartButton.addEventListener('click', async () => {
         const listItem = document.createElement('li');
         listItem.textContent = 'Корзина пуста';
         cartItemsList.append(listItem);
-            if(listItem.textContent = 'Корзина пуста') {
-                const btn = document.querySelector('.modal__cart-button');
-                btn.setAttribute('disabled', true)
-                btn.style.cursor = "not-allowed"
-            }
         return;
     }
 
