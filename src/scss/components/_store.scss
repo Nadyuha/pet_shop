@@ -9,16 +9,24 @@
         align-items: center;
         justify-content: space-between;
         margin-bottom: 40px;
+
+        @include mobile {
+            flex-wrap: wrap;
+            justify-content: end;
+            gap: 30px;
+        }
     }
 
     &__categories {
         display: flex;
         flex-wrap: wrap;
         gap: 28px;
+        //overflow-x: auto;
         width: 90%;
 
         @include mobile {
-            gap: 10px;
+            flex-grow: 1;
+            gap: 15px;
         }
     }
 
@@ -63,6 +71,11 @@
         @include bigscreen {
             width: 32px;
             height: 32px;
+            vertical-align: middle;
+        }
+
+        @include mobile {
+            vertical-align: middle;
         }
     }
 
@@ -107,6 +120,7 @@
 
     &__item {
         display: flex;
+        justify-self: center;
     }
 
     // &__product {

@@ -1,286 +1,49 @@
-const API_URL = 'https://half-lacy-rock.glitch.me';
+import { fetchProductByCategory } from "./js/api";
+import { addToCart } from "./js/cart";
+import { renderProducts } from "./js/dom";
+
 const buttons = document.querySelectorAll('.store__category-button');
 const productList = document.querySelector('.store__list');
-const cartButton = document.querySelector('.store__cart-button');
-const cartCount = cartButton.querySelector('.store__cart-cnt');
-const modalOverlay = document.querySelector('.modal-overlay');
-const cartItemsList = document.querySelector('.modal__cart-items');
-const modalCloseButton = document.querySelector('.modal-overlay__close-button');
-const preloader = document.querySelector('.preloader__block');
-const cartTotalPriceElement = document.querySelector('.modal__cart-price');
-const cartForm = document.querySelector('.modal__cart-form');
+const preloader = document.createElement('div');
+preloader.classList.add('preloader__block')
+preloader.innerHTML = `
+<div class="preload__img">
+<svg class="preload__img-svg" width="100" height="100" viewbox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M14.0002 50.0005C14.0002 69.8825 30.1182 86.0005 50.0002 86.0005C69.8822 86.0005 86.0002 69.8825 86.0002 50.0005C86.0002 30.1185 69.8823 14.0005 50.0003 14.0005C45.3513 14.0005 40.9082 14.8815 36.8282 16.4865" stroke="#e47537" stroke-width="8" stroke-miterlimit="10" stroke-linecap="round"/>
+</svg>
+</div>
+`
+document.body.append(preloader)
 
-const orderMessageElement = document.createElement('div');
-orderMessageElement.classList.add('order-message');
-
-const orderMessageText = document.createElement('p');
-// orderMessageText.textContent = '';
-orderMessageText.classList.add('order-message__text');
-
-const orderMessageCloseButton = document.createElement('button');
-orderMessageCloseButton.classList.add('order-message__close-button');
-orderMessageCloseButton.textContent = "Закрыть";
-
-orderMessageElement.append(orderMessageText, orderMessageCloseButton);
-
-orderMessageCloseButton.addEventListener('click', () => {
-    orderMessageElement.remove();
-})
-
-
-// orderMessageElement.innerHTML = `
-// `
-
-
-
-const createProductCart = (product) => {
-    const productCart = document.createElement('li');
-    productCart.classList.add('store__item');
-    productCart.innerHTML = `
-    <article class="store__product product">
-        <img src="${API_URL}${product.photoUrl}" alt="${product.name}" width="388px" height="261px" class="product__image">
-        <h3 class="product__title">${product.name}</h3>
-        <p class="product__price">${product.price}&nbsp;₽</p>
-        <button class="product__btn-add-cart" data-id="${product.id}">Заказать</button>
-    </article>
-    `
-    return productCart;
-}
-
-const renderProducts = (products) => {
-    productList.textContent = "";
-    products.forEach(product => {
-        const productCart = createProductCart(product);
-        // console.log(product);
-        productList.append(productCart);
-    });
-}
-
-const fetchProductByCategory = async (category) => {
-    try {
-        preloader.style.display ='flex';
-        const response = await fetch(`${API_URL}/api/products/category/${category}`);
-        preloader.style.display ='none';
-        if(!response.ok) {
-            throw new Error(response.status)
-        }
-
-        const products = await response.json()
-        
-        renderProducts(products);
-    }
-    catch(err) {
-        console.log(`Ошибка запроса товаров: ${err}`);
-    }
-};
-
-const fetchCartItems = async (ids) => {
-    try {
-        const response = await fetch(`${API_URL}/api/products/list/${ids.join(",")}`)
-        
-        if(!response.ok) {
-            throw new Error(response.status)
-        }
-
-        return await response.json()
-    } catch (error) {
-        console.error(`Ошибка запроса товаров для корзины: ${error}`);
-        return [];
-    }
-};
-
-const changeCategory = (event) => {
-    const target = event.target;
-    const category = target.textContent;
-
-    buttons.forEach(button => {
-        button.classList.remove('store__category-button--active');
-    });
-
-    target.classList.add('store__category-button--active');
-    fetchProductByCategory(category);
-}
-
-buttons.forEach(button => {
-    button.addEventListener('click', changeCategory);
-    if(button.classList.contains('store__category-button--active')) {
-        fetchProductByCategory(button.textContent);
-    }
-});
-
-const calculateTotalPrice = (cartItems, products) => cartItems.reduce((acc, item) => {
-    const product = products.find(prod => prod.id === item.id);
-    return acc + product.price * item.count;
-}, 0)
-
-const renderCartItems = async () => {
-    cartItemsList.textContent = '';
-    const cartItems = JSON.parse(localStorage.getItem('cartItems') || "[]" );
-    const products = JSON.parse(localStorage.getItem('cartProductDetails') || "[]" );
-
-    products.forEach(product => {
-        const cartItem = cartItems.find((item) => item.id === product.id);
-        if(!cartItem) {
-            return;
-        }
-        const listItem = document.createElement('li');
-        listItem.classList.add('modal__cart-item')
-        listItem.innerHTML = `
-                        <img src="${API_URL}${product.photoUrl}" alt="${product.name}" class="modal__cart-item-image">
-                        <h3 class="modal__cart-item-title">${product.name}</h3>
-                        <div class="modal__cart-item-count">
-                            <button class="modal__btn modal__minus" data-id=${product.id}>-</button>
-                            <span class="modal__count">${cartItem.count}</span>
-                            <button class="modal__btn modal__plus" data-id=${product.id}>+</button>
-                        </div>
-                        <p class="modal__cart-item-price">${product.price * cartItem.count}&nbsp;₽</p>
-        `
-        cartItemsList.append(listItem);
-    })
-
-    const totalPrice = calculateTotalPrice(cartItems, products);
-    console.log(totalPrice);
-    if(totalPrice === 0) {
-        const btn = document.querySelector('.modal__cart-button');
-        btn.setAttribute('disabled', true)
-        btn.style.cursor = "not-allowed"
-    } else {
-        const btn = document.querySelector('.modal__cart-button');
-        btn.setAttribute('disabled', false)
-        btn.style.cursor = "pointer"
-    }
-    cartTotalPriceElement.innerHTML = `${totalPrice}&nbsp;₽`
-};
-
-cartButton.addEventListener('click', async () => {
-    modalOverlay.style.display = 'flex';
-    console.log();
+const init = () => {
+    const changeCategory = async ({target}) => {
+        const category = target.textContent;
     
-    const cartItems = JSON.parse(localStorage.getItem('cartItems') || "[]" );
-    const ids = cartItems.map(item => item.id);
-    
-    if(!ids.length) {
-        cartItemsList.textContent = "";
-        const listItem = document.createElement('li');
-        listItem.textContent = 'Корзина пуста';
-        cartItemsList.append(listItem);
-        return;
-    }
-
-    const products = await fetchCartItems(ids);
-    localStorage.setItem('cartProductDetails', JSON.stringify(products));
-
-    renderCartItems();
-});
-
-modalOverlay.addEventListener('click', ({target}) => {
-    if(target === modalOverlay ||
-    target.closest('.modal-overlay__close-button')) {
-        modalOverlay.style.display = 'none';
-    };
-});
-
-const updateCartCount = () => {
-    const cartItems = JSON.parse(localStorage.getItem('cartItems') || "[]" );
-    cartCount.textContent = cartItems.length;
-}
-
-updateCartCount();
-
-const addToCart = (productId) => {
-    const cartItems = JSON.parse(localStorage.getItem('cartItems') || "[]" );
-    const existingItem = cartItems.find((item) => item.id === productId);
-
-    if(existingItem) {
-        existingItem.count +=1;
-    } else {
-        cartItems.push({id: productId, count: 1})
-    }
-    //cartItems.push(productName);
-    localStorage.setItem('cartItems',JSON.stringify(cartItems));
-    updateCartCount();
-};
-
-productList.addEventListener('click', ({ target }) => {
-    if(target.closest('.product__btn-add-cart')) {
-        //const productCard = target.closest('.store__product');
-        const productId = target.dataset.id//target.data.id
-        //const productName = productCard.querySelector('.product__title').textContent
-
-        //addToCart(productName)
-
-        addToCart(productId)
-    }
-})
-
-const updateCartItem = (productId, change) => {
-    const cartItems = JSON.parse(localStorage.getItem("cartItems") || []);
-    const itemIndex = cartItems.findIndex(item => item.id === productId);
-
-    if(itemIndex !== -1) {
-        cartItems[itemIndex].count += change;
-
-        if(cartItems[itemIndex].count <= 0) {
-            cartItems.splice(itemIndex, 1);
-        }
-        localStorage.setItem('cartItems', JSON.stringify(cartItems));
-
-        updateCartCount();
-        renderCartItems();
-    }
-}
-
-cartItemsList.addEventListener('click', ({target}) => {
-        if(target.classList.contains('modal__plus')) {
-            const productId = target.dataset.id;
-            updateCartItem(productId, 1)
-        }
-
-        if(target.classList.contains('modal__minus')) {
-            const productId = target.dataset.id;
-            updateCartItem(productId, -1)
-        }
-})
-
-const submitOrder = async (e) => {
-    e.preventDefault();
-
-    const storeId = cartForm.store.value;
-    const cartItems = JSON.parse(localStorage.getItem("cartItems") || []);
-
-    const products = cartItems.map(({id, count}) => ({
-        id,
-        quantity: count,
-    }))
-
-    try {
-        const response = await fetch(`${API_URL}/api/orders`, {
-            method: 'POST',
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({storeId, products}),
+        buttons.forEach(button => {
+            button.classList.remove('store__category-button--active');
         });
-
-        if(!response.ok) {
-            throw new Error(response.status);
-        };
-
-        localStorage.removeItem('cartItems');
-        localStorage.removeItem('cartProductDetails');
-
-        const { orderId } = await response.json();
-
-        orderMessageText.textContent = `Ваш заказ оформлен номер заказ ${orderId}. 
-                                        Вы можете забрать его завтра после 12:00`
-
-        document.body.append(orderMessageElement);
-        modalOverlay.style.display = 'none';
-        updateCartCount();
-
-    } catch(error) {
-        console.error(`Ошибка оформления заказа: ${error}`)
+    
+        target.classList.add('store__category-button--active');
+        const products = await fetchProductByCategory(category,preloader);
+        renderProducts(products, productList);
     }
+    
+    buttons.forEach((button) => {
+        button.addEventListener('click', changeCategory);
+        if(button.classList.contains('store__category-button--active')) {
+            changeCategory({target: button});
+        }
+    });
+    
+    productList.addEventListener('click', ({ target }) => {
+        if(target.closest('.product__btn-add-cart')) {
+            const productId = target.dataset.id
+    
+            addToCart(productId)
+        }
+    })
 }
 
-cartForm.addEventListener('submit', submitOrder)
+init();
+
+
