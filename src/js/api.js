@@ -1,4 +1,4 @@
-export const API_URL = 'https://half-lacy-rock.glitch.me';
+export const API_URL = 'https://pet-planet-api-hx99.onrender.com';
 
 // const fetchData = async (endpoint, option = {}) => {
 //     try {
